@@ -26,14 +26,17 @@
 </template>
 
 <script>
-  import { ref } from 'vue';
- export default {
+    import { ref } from 'vue';
+    export default {
+        name: 'App',
         setup () {
-const TodoItems = ref('');
-const DefaultContent = 'There is Todo list content'
-            const todosData = JSON.parse(localStorage.getItem('todos'))||DefaultContent;
+            const TodoItems = ref('');
+            const defaultItem = [{
+                content: 'This is first Todo item'
+            }]
+            const todosData = JSON.parse(localStorage.getItem('todos')) || defaultItem;
             const todos = ref(todosData);
-            function addTodo() {
+            function addTodo () {
                 if (TodoItems.value) {
                     todos.value.push({
                         done: false,
@@ -43,8 +46,12 @@ const DefaultContent = 'There is Todo list content'
                 }
                 saveData();
             }
-            function removeTodo (i) {
-                todos.value.splice(i, 1);
+            function doneTodo (todo) {
+                todo.done = !todo.done
+                saveData();
+            }
+            function removeTodo (index) {
+                todos.value.splice(index, 1);
                 saveData();
             }
             function saveData () {
@@ -55,9 +62,10 @@ const DefaultContent = 'There is Todo list content'
                 todos,
                 TodoItems,
                 addTodo,
+                doneTodo,
                 removeTodo,
                 saveData
             }
-            }
-            }
+        }
+    }
 </script>
